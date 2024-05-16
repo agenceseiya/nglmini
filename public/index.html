@@ -85,7 +85,7 @@
 <body>
     <div class="form-container">
         <div class="chat-intro">
-            <p>Hello, I'm ngl, your New Generative Link. I'm here to help you shop any product you desire.</p>
+            <p>Hello, I'm ngl, your New Generative Link. I'm here to help you shop products that you desire.</p>
         </div>
         <form id="gpt-form">
             <input type="text" id="user-input" name="user-input" placeholder="What's my next BBQ?" required>
@@ -112,4 +112,18 @@
                     body: JSON.stringify({ userInput })
                 });
 
-                const data
+                const data = await response.json();
+                const link = data.choices[0].text.trim();
+
+                document.getElementById('link').href = link;
+                document.getElementById('recommendation').innerText = 'Here\'s a recommendation for you:';
+                document.getElementById('response').style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('recommendation').innerText = 'Sorry, there was an error processing your request. Please try again.';
+                document.getElementById('response').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
