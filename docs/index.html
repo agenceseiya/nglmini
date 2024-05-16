@@ -98,7 +98,7 @@
             <button type="submit">ngl</button>
         </form>
         <div id="response" class="card">
-            <p>Here's a recommendation for you:</p>
+            <p id="recommendation">Here's a recommendation for you:</p>
             <a id="link" href="#" target="_blank">Check it out</a>
         </div>
     </div>
@@ -127,13 +127,25 @@
                     })
                 });
 
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
                 const data = await response.json();
+                
+                if (!data.choices || data.choices.length === 0) {
+                    throw new Error('No choices found in the response');
+                }
+
                 const link = data.choices[0].text.trim();
 
                 document.getElementById('link').href = link;
+                document.getElementById('recommendation').innerText = 'Here\'s a recommendation for you:';
                 document.getElementById('response').style.display = 'block';
             } catch (error) {
                 alert('Error: ' + error.message);
+                document.getElementById('recommendation').innerText = 'Sorry, there was an error processing your request. Please try again.';
+                document.getElementById('response').style.display = 'block';
             }
         });
 
